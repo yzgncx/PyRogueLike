@@ -129,7 +129,7 @@ class GameMap(GameObject):
             # while also not incurring the penalty of an ever-ballooning dict size.
             # NOTE: add the first item to the list using + [...] syntax, not .append(...) syntax
             self.m_entities=GameMap.missingdict(list)
-            for e in metadata['entities']:
+            for e in metadata['item_entities']:
                 self.m_entities[(e['y_pos'],e['x_pos'])]+=[Entity(e['resource_id'],e['y_pos'],e['x_pos'],
                     self.m_resources.m_ids[e['resource_id']],self)]
             self.m_py=metadata['player_start_y']
@@ -401,7 +401,6 @@ def repl(stdscr):
     while k != ord('q'):
         my_player.take_action(k)
         game_screen.render()
-        render_screen(stdscr,stdscr,my_map,my_player)
         k = stdscr.getch()
 
 
