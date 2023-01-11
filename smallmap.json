@@ -1,0 +1,27 @@
+{
+    "item_entities" : [
+        {
+            "resource_id" : 3,
+            "y_pos" : 2,
+            "x_pos" : 6
+        },
+        {
+            "resource_id" : 2,
+            "y_pos" : 8,
+            "x_pos" : 8
+        },
+        {
+            "resource_id" : 1,
+            "y_pos" : 4,
+            "x_pos" : 4
+        },
+        {
+            "resource_id" : 4,
+            "y_pos" : 6,
+            "x_pos" : 10
+        }
+    ],
+    "player_start_y" : 5,
+    "player_start_x" : 10,
+    "player_facing" : "down"
+}

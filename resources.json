@@ -1,0 +1,61 @@
+{
+    "item_data" : [
+        {
+            "id" : 2,
+            "name" : "potion",
+            "item" : {
+                "item_class" : "small",
+                "sprite_3x3" : [" _ ",
+                                " : ",
+                                "(_)"]
+            },
+            "entity" : {
+                "sprite" : "p",
+                "collision" : false,
+                "destructible" : true
+            }
+        },
+        {
+            "id" : 3,
+            "name" : "sword",
+            "item" : {
+                "item_class" : "large",
+                "sprite_3x3" : [" | ",
+                                " | ",
+                                "(| "]
+            },
+            "entity" : {
+                "sprite": "†",
+                "collision" : false,
+                "destructible" : false
+            }
+        },
+        {
+            "id" : 4,
+            "name" : "bomb",
+            "item" : {
+                "item_class" : "small",
+                "sprite_3x3" : ["  *",
+                                " _/",
+                                "(_)"]
+            },
+            "entity" : {
+                "sprite": "ó",
+                "collision" : false,
+                "destructible" : true
+            }
+        }
+    ],
+    "structure_data" : [
+        {   
+            "id" : 1,
+            "name" : "rock",
+            "structure" : {},
+            "entity" : {
+                "sprite" : "®",
+                "collision" : true,
+                "destructible" : true
+            }
+        }        
+    ]
+}
