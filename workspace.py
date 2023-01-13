@@ -76,6 +76,8 @@ class GameObject:
 
 class Game(GameObject):
     def __init__(self):
+        #TODO: create a copy of game data so as not to overwrite base map + metadata files
+        
         self.m_player=self.initialize_player()
         self.m_map=self.initialize_map()
 
@@ -85,11 +87,12 @@ class Game(GameObject):
     def initialize_map(self):
         return GameMap('smallmap.txt','smallmap.json')
     
-    def swap_map(self,new_map):
+    def swap_map(self,new_map=None):
+        self.m_map.save_mapstate()
         #TODO: SWAP_MAP SHOULD SAVE THE CURRENT GAME MAP AND GAME STATE, AND INITIALIZE
         #      THE DATA IN new_map
         #
-        #      self.m_map.save_gamestate()
+        #      self.m_map.save_mapstate()
         return
 
 class Entity(GameObject):
@@ -115,6 +118,10 @@ class GameMap(GameObject):
         #
         # NOTE: maps are defined as rectangular; a map with uneven line-lengths
         #       will result in undefined behavior
+
+        self.m_map_name=os.path.splitext(map_file)[0]
+        #TODO remove metadata filename across this code, and make metadata name = map_basename+.json 
+        
         with open(map_file, 'r') as inf:
             self.m_map = [[ x for x in s.strip()] for s in inf.readlines()]
             self.m_height = len(self.m_map)
@@ -139,10 +146,26 @@ class GameMap(GameObject):
             for e in metadata['item_entities']:
                 self.m_entities[(e['y_pos'],e['x_pos'])]+=[Entity(e['resource_id'],e['y_pos'],e['x_pos'],
                     self.m_resources.m_ids[e['resource_id']],self)]
+
             self.m_py=metadata['player_start_y']
             self.m_px=metadata['player_start_x']
             self.m_player_facing=metadata['player_facing']
 
+    def save_mapstate(self):
+        tmp={}
+        tmp['item_entities']=[]
+        for x,y in self.m_entities:
+            for e in self.m_entities[(x,y)]:
+                tmp['item_entities'].append({"resource_id":e.m_id,"y_pos":e.m_y,"x_pos":e.m_x})
+        tmp["player_start_y"]=self.m_py
+        tmp["player_start_x"]=self.m_px
+        tmp["player_facing"]=self.m_player_facing
+        with open(self.m_map_name+'.json', 'w', encoding='utf-8') as outf:
+            json.dump(tmp,outf, ensure_ascii=False, indent=4)
+        
+        #TODO: write map state to file.
+
+            
     def get_p_yx(self):
         return (self.m_py,self.m_px)
 
@@ -186,10 +209,7 @@ class GameMap(GameObject):
 
     def destroy_entity(self,e):
         self.m_entities[e.m_y,e.m_x].remove(e)
-
-    def save_gamestate(self):
-        #TODO: write map state to file.
-
+        
 
 class Player(GameObject):
     def __init__(self,game):
@@ -210,7 +230,9 @@ class Player(GameObject):
             self.pick_up(my_map.get_top_entity(p_y,p_x))
         if k == ord('d'):
             self.drop(self.get_inv_slot())
-
+        #temporary. test key saves map state when pressed
+        if k == ord('z'):
+            self.m_game.swap_map()
 
     def pick_up(self,entity):
         if entity is not None:
