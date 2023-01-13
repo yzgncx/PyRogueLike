@@ -84,6 +84,13 @@ class Game(GameObject):
 
     def initialize_map(self):
         return GameMap('smallmap.txt','smallmap.json')
+    
+    def swap_map(self,new_map):
+        #TODO: SWAP_MAP SHOULD SAVE THE CURRENT GAME MAP AND GAME STATE, AND INITIALIZE
+        #      THE DATA IN new_map
+        #
+        #      self.m_map.save_gamestate()
+        return
 
 class Entity(GameObject):
     def __init__(self,resource_id,y_pos,x_pos,resource,game_map):
@@ -179,6 +186,9 @@ class GameMap(GameObject):
 
     def destroy_entity(self,e):
         self.m_entities[e.m_y,e.m_x].remove(e)
+
+    def save_gamestate(self):
+        #TODO: write map state to file.
 
 
 class Player(GameObject):
