@@ -77,22 +77,22 @@ class GameObject:
 class Game(GameObject):
     def __init__(self):
         #TODO: create a copy of game data so as not to overwrite base map + metadata files
-        
+        map_name='smallmap'
         self.m_player=self.initialize_player()
-        self.m_map=self.initialize_map()
+        self.m_map=self.initialize_map(map_name)
 
     def initialize_player(self):
         return Player(self)
 
-    def initialize_map(self):
-        return GameMap('smallmap.txt','smallmap.json')
+    def initialize_map(self,map_name):
+        return GameMap(map_name+'.map',map_name+'.json')
     
-    def swap_map(self,new_map=None):
+    def swap_map(self,new_map='smallmap'):
         self.m_map.save_mapstate()
+        self.m_map=self.initialize_map(new_map)
         #TODO: SWAP_MAP SHOULD SAVE THE CURRENT GAME MAP AND GAME STATE, AND INITIALIZE
         #      THE DATA IN new_map
-        #
-        #      self.m_map.save_mapstate()
+
         return
 
 class Entity(GameObject):
@@ -232,7 +232,7 @@ class Player(GameObject):
             self.drop(self.get_inv_slot())
         #temporary. test key saves map state when pressed
         if k == ord('z'):
-            self.m_game.swap_map()
+            self.m_game.swap_map('mediummap')
 
     def pick_up(self,entity):
         if entity is not None:
@@ -307,7 +307,13 @@ class MapWindow(Window):
         super().__init__(parent_scr,h,w,0,0)
         return
 
+    def update_map(self):
+        self.m_map=self.m_game.m_map
+
     def render(self):
+        if not (self.m_map is self.m_game.m_map):
+            self.update_map()
+        
         # recalculate screen size values 
         # (these can change if the user resizes the screen)
         screen_center_y = self.height // 2
