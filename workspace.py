@@ -146,6 +146,9 @@ class GameMap(GameObject):
             for e in metadata['item_entities']:
                 self.m_entities[(e['y_pos'],e['x_pos'])]+=[Entity(e['resource_id'],e['y_pos'],e['x_pos'],
                     self.m_resources.m_ids[e['resource_id']],self)]
+            for e in metadata['structure_entities']:
+                self.m_entities[(e['y_pos'],e['x_pos'])]+=[Entity(e['resource_id'],e['y_pos'],e['x_pos'],
+                    self.m_resources.m_ids[e['resource_id']],self)]
 
             self.m_py=metadata['player_start_y']
             self.m_px=metadata['player_start_x']
@@ -231,8 +234,10 @@ class Player(GameObject):
         if k == ord('d'):
             self.drop(self.get_inv_slot())
         #temporary. test key saves map state when pressed
-        if k == ord('z'):
-            self.m_game.swap_map('mediummap')
+#        if k == ord('z'):
+#            self.
+
+
 
     def pick_up(self,entity):
         if entity is not None:
